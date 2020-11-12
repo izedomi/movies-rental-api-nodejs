@@ -1,0 +1,11 @@
+{"message":"Server started on ports 3000","level":"info"}
+{"message":"Cast to ObjectId failed for value \"5f79f265cabce3372cd959e\" at path \"_id\" for model \"Customer\"","level":"error"}
+{"message":"Server started on ports 3000","level":"info"}
+{"message":"Cannot set headers after they are sent to the client","level":"error"}
+{"message":"Cannot set headers after they are sent to the client","level":"error"}
+{"message":"Server started on ports 3000","level":"info"}
+{"message":"Server started on ports 3000","level":"info"}
+{"message":"Cast to ObjectId failed for value \"5f7707ec880c3c265435a05\" at path \"_id\" for model \"Genre\"","level":"error"}
+{"message":"Server started on ports 3000","level":"info"}
+{"message":"Server started on ports 3000","level":"info"}
+{"message":"Server started on ports 3000","level":"info"}
