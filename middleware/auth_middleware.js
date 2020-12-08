@@ -9,6 +9,8 @@ module.exports = function (req, res, next){
 
     try{
         req.user = jwt.verify(token, config.get("jwtPrivateKey"));
+        console.log("yyyyyyyy: " + req.user._id)
+        console.log("xxxxxxxxxxx: " + req.user.isAdmin)
         next();
     }
     catch(e){

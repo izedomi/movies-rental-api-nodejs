@@ -70,8 +70,9 @@ router.put("/:id", authMiddleware, async (req, res) => {
 //delete a genre
 router.delete("/:id", [authMiddleware, adminMiddleware], async (req, res) => {
 
+
     let result = await Genre.findByIdAndRemove(req.params.id, {useFindAndModify: false});
-    res.send(result);
+    res.status(200).send(result);
    
 });
 

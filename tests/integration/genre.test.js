@@ -110,8 +110,169 @@ describe('/api/genre', () => {
 
         });
 
+    })
 
+    describe('PUT /', () => {
 
+        let id;
+        let token;
+        let title = 'genre1';
+        let newTitle = 'updateGenre1'
         
+
+
+        beforeEach(() => {
+            title = 'genre1'
+            token = new User().generateAuthToken()
+        })
+
+        const execSave = async() => {
+            return request(server)
+            .post('/api/genres')
+            .set('x-auth-token', token)
+            .send({title});
+        }
+
+        const execUpdate = async() => {
+            return request(server)
+            .put('/api/genres/'+id)
+            .set('x-auth-token', token)
+            .send({title: newTitle});
+        }
+
+        it('should return status 200 when valid ID is passed', async () => {
+
+            const saveRes = await execSave()
+            id = saveRes.body._id;
+
+            const updateRes = await execUpdate();
+
+            expect(updateRes.status).toBe(200);
+            expect(updateRes.body).toHaveProperty("_id");
+            expect(updateRes.body).toHaveProperty("title", "updateGenre1")
+
+        })
+
+
+        it('should return 401 if user is not logged in', async() => {
+
+            token = '';
+
+            const saveRes = await execSave()
+            id = saveRes.body._id;
+
+            const updateRes = await execUpdate();
+
+            expect(updateRes.status).toBe(401);
+      
+        })
+       
+
+        it('should return status 400 when invalid Id is passed', async() => {
+
+            //const saveRes = await execSave()
+            result  = new Genre({title: 'title'})
+            id = result._id;
+
+            const updateRes = await execUpdate();
+
+            expect(updateRes.status).toBe(400);
+
+        })
+
+        it('should return 400 if genre title is less than 3 characters', async() => {
+
+           // const saveRes = await execSave()
+
+            result  = new Genre({title: 'title'})
+            id = result._id;
+            newTitle = '23'
+            
+            const updateRes = await execUpdate();
+
+            expect(updateRes.status).toBe(400);
+
+       })
+
+    });
+
+
+    describe("DELETE /id", () => {
+
+        let id;
+        let token;
+        let title = 'genre1';
+        let isAdmin = true;
+        
+
+        beforeEach(() => {
+            title = 'genre1'
+            token = new User({isAdmin: true}).generateAuthToken()
+        })
+
+        const execSave = async() => {
+            return request(server)
+            .post('/api/genres')
+            .set('x-auth-token', token)
+            .send({title});
+        }
+
+        const execDelete = async() => {
+            return await request(server)
+            .delete('/api/genres/'+id)
+            .set('x-auth-token', token)
+        }
+
+
+        it('should return status 200 when valid ID is passed', async () => {
+
+            const saveRes = await execSave()
+            id = saveRes.body._id;
+
+            const deleteRes = await execDelete();
+   
+            expect(deleteRes.status).toBe(200);
+            expect(deleteRes.body).toHaveProperty("_id");
+            expect(deleteRes.body).toHaveProperty("title", "genre1")
+
+        })
+
+        it('should return 401 if user is not logged in', async() => {
+
+            token = '';
+
+            const saveRes = await execSave()
+            id = saveRes.body._id;
+
+            const deleteRes = await execDelete();
+
+            expect(deleteRes.status).toBe(401);
+      
+        })
+
+        it('should return 403 if user is not an admin', async() => {
+
+            token = new User().generateAuthToken() 
+
+            const saveRes = await execSave()
+            id = saveRes.body._id;
+
+            const deleteRes = await execDelete();
+
+            expect(deleteRes.status).toBe(403);
+      
+        })
+
+        it('should return 404 if invalid id is passed', async  () => {
+
+            const saveRes = await execSave()
+            id = '1';
+
+            const deleteRes = await execDelete();
+
+            expect(deleteRes.status).toBe(500)
+        });
+       
+
     })
 })
