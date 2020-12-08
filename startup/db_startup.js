@@ -1,10 +1,12 @@
 
 const mongoose = require("mongoose");
+const config = require("config");
 
 module.exports = function(){
-    
-    mongoose.connect("mongodb://localhost/vidly", {useNewUrlParser: true, useUnifiedTopology: true},).
-    then(() => console.log("customer module: connected to database sucessfully"))
+    const db = config.get('db');
+
+    mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true},).
+    then(() => console.log(`connected to ${db} sucessfully`))
    // catch(() => console.log("Customer module: error connecting to database"));
 }
 

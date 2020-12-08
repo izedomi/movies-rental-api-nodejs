@@ -9,5 +9,7 @@ require('./startup/route_startup')(app);
 require('./startup/db_startup')();
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => winston.info("Server started on ports "+ port));
+const server = app.listen(port, () => winston.info("Server started on ports "+ port));
+
+module.exports = server;
 

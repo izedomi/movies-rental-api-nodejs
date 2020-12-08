@@ -9,6 +9,8 @@ const {validate} = require("../validation/genre.js");
 
 const authMiddleware = require("../middleware/auth_middleware");
 const adminMiddleware = require("../middleware/admin_middleware");
+const validateObjectIdMiddleware = require("../middleware/validateObjectId_middleware");
+const mongoose = require('mongoose');
 
 //fetch genres
 router.get("/", async (req, res) => {
@@ -20,9 +22,10 @@ router.get("/", async (req, res) => {
 
 
 //getch a single genre
-router.get("/:id", async (req, res) => {
+router.get("/:id", validateObjectIdMiddleware, async (req, res) => {
 
     let genre = await Genre.findById(req.params.id);
+
     if(!genre) return res.status(400).send("No genre with the selected Id");
     res.send(genre);
   
@@ -37,10 +40,10 @@ router.post("/",  authMiddleware, async (req, res) => {
     if(error) return res.status(400).send(error.details[0].message);
 
     const genre = new Genre({title: req.body.title});
-
     let result = await genre.save();
+
     res.send(result);
-    console.log(result);
+    //console.log(result);
   
 });
 

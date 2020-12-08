@@ -6,8 +6,8 @@ const bcrypt = require('bcrypt');
 const router = express.Router();
 
 
- const {validate} = require("../validation/auth_validation");
- const {User} = require("../models/user");
+const {validate} = require("../validation/auth_validation");
+const {User} = require("../models/user");
 
 
 //login user
