@@ -33,7 +33,7 @@ router.get("/:id", validateObjectIdMiddleware, async (req, res) => {
 
 
 //add a genre
-router.post("/",  authMiddleware, async (req, res) => {
+router.post("/", authMiddleware, async (req, res) => {
 
     //valide request body
     let error = validate(req.body);
@@ -48,7 +48,7 @@ router.post("/",  authMiddleware, async (req, res) => {
 });
 
 //update a genre
-router.put("/:id", authMiddleware, async (req, res) => {
+router.put("/:id", [authMiddleware, validateObjectIdMiddleware], async (req, res) => {
 
    
     //check if genre exist
@@ -68,8 +68,7 @@ router.put("/:id", authMiddleware, async (req, res) => {
 });
 
 //delete a genre
-router.delete("/:id", [authMiddleware, adminMiddleware], async (req, res) => {
-
+router.delete("/:id", [authMiddleware, adminMiddleware, validateObjectIdMiddleware], async (req, res) => {
 
     let result = await Genre.findByIdAndRemove(req.params.id, {useFindAndModify: false});
     res.status(200).send(result);

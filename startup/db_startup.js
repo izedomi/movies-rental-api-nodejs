@@ -7,7 +7,7 @@ module.exports = function(){
 
     mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true},).
     then(() => console.log(`connected to ${db} sucessfully`))
-   // catch(() => console.log("Customer module: error connecting to database"));
+    .catch((e) => console.log("Customer module: error connecting to database: "+ e));
 }
 
 

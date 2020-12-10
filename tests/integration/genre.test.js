@@ -3,14 +3,17 @@ const request = require('supertest');
 const {Genre} = require('../../models/genre');
 const {User} = require('../../models/user');
 
-let server;
 
 describe('/api/genre', () => {
 
+    let server;
+
+
     beforeEach(() => {server = require('../../index');})
     afterEach( async() => {
-        server.close();
+        
         await Genre.remove({})
+        await server.close();
     })
 
     describe('GET /', () => {
@@ -22,6 +25,7 @@ describe('/api/genre', () => {
                 {'title': 'genre2'}
             ])
             
+            
             const res = await request(server).get('/api/genres')
 
             expect(res.status).toBe(200)
@@ -31,7 +35,6 @@ describe('/api/genre', () => {
         });
 
     });
-
 
     describe("GET /:id", () => {
 
@@ -56,7 +59,6 @@ describe('/api/genre', () => {
         });
 
     });
-
 
     describe('POST /', () => {
 
@@ -112,6 +114,8 @@ describe('/api/genre', () => {
 
     })
 
+
+    
     describe('PUT /', () => {
 
         let id;
@@ -120,10 +124,10 @@ describe('/api/genre', () => {
         let newTitle = 'updateGenre1'
         
 
-
-        beforeEach(() => {
+        beforeEach(async() => {
             title = 'genre1'
             token = new User().generateAuthToken()
+            await Genre.remove({})
         })
 
         const execSave = async() => {
@@ -194,10 +198,7 @@ describe('/api/genre', () => {
 
        })
 
-    });
-
-
-    describe("DELETE /id", () => {
+       describe("DELETE /id", () => {
 
         let id;
         let token;
@@ -207,7 +208,7 @@ describe('/api/genre', () => {
 
         beforeEach(() => {
             title = 'genre1'
-            token = new User({isAdmin: true}).generateAuthToken()
+            token = new User({isAdmin}).generateAuthToken()
         })
 
         const execSave = async() => {
@@ -230,7 +231,7 @@ describe('/api/genre', () => {
             id = saveRes.body._id;
 
             const deleteRes = await execDelete();
-   
+         
             expect(deleteRes.status).toBe(200);
             expect(deleteRes.body).toHaveProperty("_id");
             expect(deleteRes.body).toHaveProperty("title", "genre1")
@@ -250,7 +251,7 @@ describe('/api/genre', () => {
       
         })
 
-        it('should return 403 if user is not an admin', async() => {
+        it('should return 403 if user is logged in but not an admin', async() => {
 
             token = new User().generateAuthToken() 
 
@@ -270,9 +271,12 @@ describe('/api/genre', () => {
 
             const deleteRes = await execDelete();
 
-            expect(deleteRes.status).toBe(500)
+            expect(deleteRes.status).toBe(404)
         });
        
-
     })
+
+    });
+
 })
+

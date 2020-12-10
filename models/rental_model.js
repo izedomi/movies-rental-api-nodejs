@@ -49,6 +49,9 @@ const rentalSchema = new mongoose.Schema({
     },
     dateReturned: {
         type: Date,
+    },
+    rentalFee: {
+        type: Number
     }
 
 });

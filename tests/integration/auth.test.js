@@ -6,6 +6,7 @@ const {User} = require('../../models/user');
 describe('Auth Middleware', () => {
 
     let token;
+    let server;
 
    
     beforeEach(() => {
@@ -14,8 +15,9 @@ describe('Auth Middleware', () => {
     })
 
     afterEach( async() => {
-        server.close();
+       
         await Genre.remove({})
+        await server.close();
     })
 
     const exec = () => {
