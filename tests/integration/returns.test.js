@@ -133,5 +133,19 @@ describe('/api/returns', () => {
         expect(movieInDB.numberInStock).toBe(movie.numberInStock + 1)
     })
 
+
+    it('should return rental for valid input', async () => {
+        
+        const res = await exec();
+        
+        expect(res.status).toBe(200)
+        expect(Object.keys(res.body))
+        .toEqual(
+            expect.arrayContaining(
+                ['dateCollected', 'dateReturned', 'rentalFee', 'customer', 'movie']
+            )
+        )
+    })
+
     
 })
