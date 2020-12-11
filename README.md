@@ -7,6 +7,10 @@ Authorization, Authentication, Integration TEST using JEST, Transactions
 
 # End points
 
+	
+AUTH APIs => 'api/auth'
+
+	post('/') => User log in
 
 USERS APIs => 'api/users'
 	
@@ -14,11 +18,6 @@ USERS APIs => 'api/users'
 
 	get('/me') => get logged in user
 	
-	
-AUTH APIs => 'api/auth'
-
-	post('/') => User log in
-
 GENRES APIs => 'api/genres'
 
 	get('/') => get all genre
