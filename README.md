@@ -7,6 +7,18 @@ Authorization, Authentication, Integration TEST using JEST, Transactions
 
 # End points
 
+
+USERS APIs => 'api/users'
+	
+	post('/') => Register new user
+
+	get('/me') => get logged in user
+	
+	
+AUTH APIs => 'api/auth'
+
+	post('/') => User log in
+
 GENRES APIs => 'api/genres'
 
 	get('/') => get all genre
@@ -44,22 +56,10 @@ MOVIES APIs => 'api/movies'
 
 RENTALS APIs => 'api/rentals'
 	
-	
 	get('/') => get list of all rentals
 	
 	post('/') => Add a rental
 	
-
-USERS APIs => 'api/users'
-	
-	post('/') => Register new user
-
-	get('/me') => get logged in user
-	
-	
-AUTH APIs => 'api/auth'
-
-	post('/') => User log in
 
 RETURNS API => 'api/returns'
 	
