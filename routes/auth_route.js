@@ -1,6 +1,3 @@
-const config = require('config');
-const jwt = require('jsonwebtoken');
-const mongoose = require('mongoose');
 const express = require('express');
 const bcrypt = require('bcrypt');
 const router = express.Router();
