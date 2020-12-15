@@ -31,6 +31,7 @@ const customerSchema = new mongoose.Schema({
     }
 });
 
+
 //create schema
 const rentalSchema = new mongoose.Schema({
     
