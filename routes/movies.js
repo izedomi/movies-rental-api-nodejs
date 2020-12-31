@@ -12,14 +12,66 @@ const { route } = require("./users");
 
 const router = express.Router();
 
-//fetch all movies
+
+/**
+   * @swagger
+   * /api/movies:
+   *   get:
+   *     description: Returns all movies.
+   *     responses:
+   *       200:
+   *         description: success.
+   *       404:
+   *         description: No found.
+*/
 router.get("/", async(req, res) => {
 
     let movies = await Movie.find();
     res.send(movies);
 });
 
-//add a movie
+
+/**
+ * @swagger
+ *
+ * /api/movies:
+ *   post:
+ *     description: Add new movie. Authentication required
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: x-auth-token
+ *         in: header
+ *         required: true
+ *         type: string
+ *       - name: title
+ *         in: body
+ *         required: true
+ *         type: string
+ *       - name: genreId
+ *         in: body
+ *         required: true
+ *         type: string
+ *       - name: numberInStock
+ *         in: body
+ *         required: true
+ *         type: number
+ *       - name: dailyRentalRate
+ *         in: body
+ *         required: true
+ *         type: number
+ *     responses:
+ *       200:
+ *         description: Success.
+ *       400:
+ *         description: Bad request - invalid request body, invalid token
+ *       401:
+ *         description: Unauthorized User, No token provided
+ *       404:
+ *         description: Not found
+ *       500:
+ *         description: Internal Server error
+ */
 router.post("/", authMiddleware, async (req, res) => {
  
     //validate request body
@@ -34,7 +86,7 @@ router.post("/", authMiddleware, async (req, res) => {
 
     //create new movie
     const movie = new Movie({
-        "title": req.body.title,
+        title: req.body.title,
         genre: {
             _id : genre._id,
             title : genre.title
@@ -51,7 +103,51 @@ router.post("/", authMiddleware, async (req, res) => {
 });
 
 
-//update a movie
+/**
+ * @swagger
+ *
+ * /api/movies:
+ *   put:
+ *     description: Update a movie. Authentication required
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: x-auth-token
+ *         in: header
+ *         required: true
+ *         type: string
+ *       - name: id
+ *         in: request
+ *         required: true
+ *         type: string
+ *       - name: title
+ *         in: body
+ *         required: true
+ *         type: string
+ *       - name: genreId
+ *         in: body
+ *         required: true
+ *         type: string
+ *       - name: numberInStock
+ *         in: body
+ *         required: true
+ *         type: number
+ *       - name: dailyRentalRate
+ *         in: body
+ *         required: true
+ *         type: number
+ *     responses:
+ *       200:
+ *         description: Success.
+ *       400:
+ *         description: Bad request - invalid request body, invalid token
+ *       401:
+ *         description: Unauthorized User, No token provided
+ *       404:
+ *         description: Not found
+ *       500:
+ *         description: Internal Server error
+ */
 router.put("/:id", authMiddleware, async (req, res) => {
      
     //check if movie exists
@@ -80,7 +176,37 @@ router.put("/:id", authMiddleware, async (req, res) => {
      
 });
 
-//delete a movie
+/**
+ * @swagger
+ *
+ * /api/movies:
+ *   delete:
+ *     description: delete a movie. Authentication required. Admin privilege required.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: x-auth-token
+ *         in: header
+ *         required: true
+ *         type: string
+ *       - name: id
+ *         in: request
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: Success.
+ *       400:
+ *         description: Bad request - invalid request body, invalid token, invalid customer Id
+ *       401:
+ *         description: Unauthorized User, No token provided
+ *       403:
+ *         description: Requested resource is forbidden
+ *       404:
+ *         description: Not found
+ *       500:
+ *         description: Internal Server error
+ */
 router.delete("/:id", [authMiddleware, adminMiddleware], async(req, res) => {
 
         let result = await Movie.findByIdAndRemove(req.params.id);

@@ -7,10 +7,39 @@ const { Movie } = require("../models/movie");
 const { Rental } = require("../models/rental_model");
 
 
-
-
-
-//return a rental
+/**
+ * @swagger
+ *
+ * /api/returns:
+ *   post:
+ *     description: Return a rental. Authentication required
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: x-auth-token
+ *         in: header
+ *         required: true
+ *         type: string
+ *       - name: movieId
+ *         in: body
+ *         required: true
+ *         type: string
+ *       - name: customerId
+ *         in: body
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: Success.
+ *       400:
+ *         description: Bad request - invalid customer Id, invalid movie Id, invalid token, Rental already processed
+ *       401:
+ *         description: Unauthorized User, No token provided
+ *       404:
+ *         description: Not rental found
+ *       500:
+ *         description: Internal Server error
+ */
 router.post("/", [authMiddleware, validatorMiddleware(validateReturns)], async(req, res) => {
 
 

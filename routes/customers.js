@@ -12,7 +12,17 @@ const {validateCustomerId} = require("../validation/customer.js");
 const authMiddleware = require("../middleware/auth_middleware");
 const adminMiddleware = require("../middleware/admin_middleware");
 
-//fetch customer
+/**
+   * @swagger
+   * /api/customers:
+   *   get:
+   *     description: Returns all customers.
+   *     responses:
+   *       200:
+   *         description: success.
+   *       404:
+   *         description: No found.
+*/
 router.get("/", async (req, res) => {
 
     const customer = await Customer.find().sort({name: 1});
@@ -21,7 +31,24 @@ router.get("/", async (req, res) => {
 });
 
 
-//getch a single customer
+/**
+   * @swagger
+   * /api/customers:
+   *   get:
+   *     description: Get a single customer.
+   *     parameters:
+   *       - name: id
+   *         in: request
+   *         type: string
+   *         required: true
+   *     responses:
+   *       200:
+   *         description: success.
+   *       400:
+   *         description: Invalid customer id.
+   *       500:
+   *         description: Internal server error
+*/
 router.get("/:id", async (req, res) => {
 
     
@@ -32,7 +59,45 @@ router.get("/:id", async (req, res) => {
   
 });
 
-//add a customer
+
+/**
+ * @swagger
+ *
+ * /api/customers:
+ *   post:
+ *     description: Add new customer. Authentication required
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: x-auth-token
+ *         in: header
+ *         required: true
+ *         type: string
+ *       - name: name
+ *         in: body
+ *         required: true
+ *         type: string
+ *       - name: phone
+ *         in: body
+ *         required: true
+ *         type: string
+ *       - name: isGold
+ *         in: body
+ *         required: true
+ *         default: false
+ *         type: boolean
+ *     responses:
+ *       200:
+ *         description: Success.
+ *       400:
+ *         description: Bad request - invalid request body, invalid token
+ *       401:
+ *         description: Unauthorized User, No token provided
+ *       404:
+ *         description: Not found
+ *       500:
+ *         description: Internal Server error
+ */
 router.post("/", authMiddleware, async (req, res) => {
 
     //valide request body
@@ -55,7 +120,49 @@ router.post("/", authMiddleware, async (req, res) => {
   
 });
 
-//update a customer
+
+/**
+ * @swagger
+ *
+ * /api/customers:
+ *   put:
+ *     description: Update a customer. Authentication required.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: x-auth-token
+ *         in: header
+ *         required: true
+ *         type: string
+ *       - name: id
+ *         in: request
+ *         required: true
+ *         type: string
+ *       - name: name
+ *         in: body
+ *         required: true
+ *         type: string
+ *       - name: phone
+ *         in: body
+ *         required: true
+ *         type: string
+ *       - name: isGold
+ *         in: body
+ *         required: true
+ *         default: false
+ *         type: boolean
+ *     responses:
+ *       200:
+ *         description: Success.
+ *       400:
+ *         description: Bad request - invalid request body, invalid token, invalid customer Id
+ *       401:
+ *         description: Unauthorized User, No token provided
+ *       404:
+ *         description: Not found
+ *       500:
+ *         description: Internal Server error
+ */
 router.put("/:id", authMiddleware, async (req, res) => {
 
     //check if customer id is a valid type
@@ -81,7 +188,37 @@ router.put("/:id", authMiddleware, async (req, res) => {
   
 });
 
-//delete a customer
+/**
+ * @swagger
+ *
+ * /api/customers:
+ *   delete:
+ *     description: delete a customer. Authentication required. Admin privilege required.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: x-auth-token
+ *         in: header
+ *         required: true
+ *         type: string
+ *       - name: id
+ *         in: request
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: Success.
+ *       400:
+ *         description: Bad request - invalid request body, invalid token, invalid customer Id
+ *       401:
+ *         description: Unauthorized User, No token provided
+ *       403:
+ *         description: Requested resource is forbidden
+ *       404:
+ *         description: Not found
+ *       500:
+ *         description: Internal Server error
+ */
 router.delete("/:id", [authMiddleware, adminMiddleware], async (req, res) => {
      
     //check if customer id is a valid type

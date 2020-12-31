@@ -15,7 +15,17 @@ const { Movie } = require("../models/movie");
 const authMiddleware = require("../middleware/auth_middleware");
 
 
-//get list of rentals
+/**
+   * @swagger
+   * /api/rentals:
+   *   get:
+   *     description: Get list of rentals.
+   *     responses:
+   *       200:
+   *         description: success.
+   *       404:
+   *         description: No found.
+*/
 router.get("/", async(req, res) => {
    
     let rentals = await Rental.find();
@@ -23,8 +33,39 @@ router.get("/", async(req, res) => {
 
 });
 
-
-// add a rental
+/**
+ * @swagger
+ *
+ * /api/rentals:
+ *   post:
+ *     description: Add new rental. Authentication required
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: x-auth-token
+ *         in: header
+ *         required: true
+ *         type: string
+ *       - name: movieId
+ *         in: body
+ *         required: true
+ *         type: string
+ *       - name: customerId
+ *         in: body
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: Success.
+ *       400:
+ *         description: Bad request - invalid customer Id, invalid movie Id, invalid token
+ *       401:
+ *         description: Unauthorized User, No token provided
+ *       404:
+ *         description: Not found
+ *       500:
+ *         description: Internal Server error
+ */
 router.post("/", authMiddleware, async(req, res) => {
 
     //valide request body
