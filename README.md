@@ -1,6 +1,14 @@
 # movies-rental-api-nodejs
 Clean and scalable movie rental API design with Node Js, Express and MongoDB
 
+
+# Before runing 'npm start'
+set environment variable "vidly_jwtPrivateKey"
+
+	on window: set vidly_jwtPrivateKey='yourkey'
+
+	on mac/linux: export vidly_jwtPrivageKey='yourkey'
+
 # Features
 Authorization, Authentication, Integration TEST using JEST, Transactions
 
